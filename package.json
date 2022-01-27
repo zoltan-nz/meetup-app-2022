@@ -1,0 +1,16 @@
+{
+  "name": "meetup-app-2022",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "private": true,
+  "scripts": {
+    "format": "prettier -l -w '**/*.{ts,tsx,js,jsx,json,md,yml}'"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1"
+  }
+}
