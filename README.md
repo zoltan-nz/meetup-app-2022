@@ -4,6 +4,26 @@ Work in progress application for learning and trying out different libraries and
 
 This is a fullstack app, with React frontend and Express based backend. Using `yarn workspaces`.
 
+## Getting Started
+
+Clone the repository:
+
+```sh
+git clone git@github.com:zoltan-nz/meetup-app-2022.git
+```
+
+Install the node packages
+
+```sh
+yarn install
+```
+
+Run both the `frontend` and `backend` using:
+
+```sh
+yarn workspaces start
+```
+
 ## Application ideas:
 
 - travel itinerary
