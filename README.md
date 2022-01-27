@@ -4,15 +4,17 @@ Work in progress application for learning and trying out different libraries and
 
 This is a fullstack app, with React frontend and Express based backend. Using `yarn workspaces`.
 
-Application ideas:
+## Application ideas:
 
 - travel itinerary
 - good reads for movies
 - realtime chat features
 
-Libraries for experiments:
+## Libraries for experiments:
 
-- Graphql, Apollo
+- (knexjs.org/)[https://knexjs.org/]
+- (Objection.js)[https://vincit.github.io/objection.js/]
+- Graphql, Apollo, (Relay?)[https://relay.dev/]
 - Prisma
 - io-ts
 
