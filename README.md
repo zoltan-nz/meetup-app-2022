@@ -45,3 +45,20 @@ https://www.meetup.com/typescript-javascript-workshop/
 Last year project:
 
 https://github.com/zoltan-nz/meetup-contacts-app-2021
+
+Idea:
+
+- add mobile app with React Native
+- implement a map feature
+
+Let's build a movie recommendation app!
+
+First Sprint:
+
+- Let's build a movie table with title and release date fields.
+- Rest API endpoint.
+- Frontend:
+  - List of movies
+  - Add a movie
+  - Edit a movie
+  - Delete a movie

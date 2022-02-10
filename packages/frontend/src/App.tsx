@@ -1,20 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Movie, MoviesPayload } from './movie';
+
+const findAllMovies = async () => {
+  const response = await axios.get<MoviesPayload>('/api/v1/movies');
+  return response.data.movies;
+};
 
 function App() {
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    findAllMovies().then((list) => setMovies(list));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>Movies</h1>
+      {movies.map((movie) => (
+        <div key={movie.id}>
+          <h2>{movie.title}</h2>
+        </div>
+      ))}
+    </>
   );
 }
 
