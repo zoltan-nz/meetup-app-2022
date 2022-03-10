@@ -1,27 +1,20 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { Movie, MoviesPayload } from './movie';
-
-const findAllMovies = async () => {
-  const response = await axios.get<MoviesPayload>('/api/v1/movies');
-  return response.data.movies;
-};
+import { useGetMoviesQuery } from './app/services/movies';
 
 function App() {
-  const [movies, setMovies] = useState<Movie[]>([]);
-
-  useEffect(() => {
-    findAllMovies().then((list) => setMovies(list));
-  }, []);
+  const { data, error, isLoading } = useGetMoviesQuery();
 
   return (
     <>
       <h1>Movies</h1>
-      {movies.map((movie) => (
-        <div key={movie.id}>
-          <h2>{movie.title}</h2>
-        </div>
-      ))}
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Error :(</p>}
+      {data && data.movies && (
+        <ul>
+          {data.movies.map((movie) => (
+            <li key={movie.id}>{movie.title}</li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
