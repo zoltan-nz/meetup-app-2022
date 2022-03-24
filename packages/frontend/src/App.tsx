@@ -1,7 +1,8 @@
-import { useGetMoviesQuery } from './app/services/movies';
+import { useDeleteMovieMutation, useGetMoviesQuery } from './app/services/movies';
 
 function App() {
   const { data, error, isLoading } = useGetMoviesQuery();
+  const [deleteMovie, { isLoading: isDeleting, data: deleteData, isSuccess: deleteSuccess }] = useDeleteMovieMutation();
 
   return (
     <>
@@ -11,10 +12,24 @@ function App() {
       {data && data.movies && (
         <ul>
           {data.movies.map((movie) => (
-            <li key={movie.id}>{movie.title}</li>
+            <li key={movie.id}>
+              {movie.title}
+              <button
+                onClick={() => {
+                  deleteMovie(movie.id).then((result) => {
+                    console.log(result);
+                    console.log(deleteData);
+                    console.log(deleteSuccess);
+                  });
+                }}
+              >
+                Delete
+              </button>
+            </li>
           ))}
         </ul>
       )}
+      {isDeleting && <p>Deleting...</p>}
     </>
   );
 }
