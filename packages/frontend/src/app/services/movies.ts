@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { MoviesPayload } from '../../movie';
+import { Movie, MoviesPayload } from '../../movie';
 
 export const movieApi = createApi({
   reducerPath: 'movieApi',
@@ -13,7 +13,11 @@ export const movieApi = createApi({
           ? [...result.movies.map(({ id }) => ({ type: 'Movie', id } as const)), { type: 'Movie', id: 'LIST' }]
           : [{ type: 'Movie', id: 'LIST' }],
     }),
-    deleteMovie: build.mutation<{ success: boolean; id: number }, number>({
+    getMovie: build.query<{ id: number }, Movie>({
+      query: ({ id }) => `/movies/${id}`,
+      providesTags: (result) => [{ type: 'Movie', id: result?.id }],
+    }),
+    deleteMovie: build.mutation<{ success: boolean; id: string }, string>({
       query(id) {
         return {
           url: `/movies/${id}`,
@@ -22,7 +26,26 @@ export const movieApi = createApi({
       },
       invalidatesTags: (result, error, id) => [{ type: 'Movie', id }],
     }),
+    createMovie: build.mutation<{ success: boolean; movie: Movie }, Partial<Movie>>({
+      query(movie) {
+        return {
+          url: '/movies',
+          method: 'POST',
+          body: { movie },
+        };
+      },
+      invalidatesTags: [{ type: 'Movie', id: 'LIST' }],
+    }),
+    updateMovie: build.mutation<{ success: boolean; id: number }, number>({
+      query(id) {
+        return {
+          url: `/movies/${id}`,
+          method: 'PUT',
+        };
+      },
+      invalidatesTags: (result, error, id) => [{ type: 'Movie', id }],
+    }),
   }),
 });
 
-export const { useGetMoviesQuery, useDeleteMovieMutation } = movieApi;
+export const { useGetMoviesQuery, useDeleteMovieMutation, useUpdateMovieMutation, useCreateMovieMutation } = movieApi;

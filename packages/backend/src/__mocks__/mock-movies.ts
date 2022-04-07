@@ -1,12 +1,13 @@
+import { v4 } from 'uuid';
 import { Movie } from '../models/movie';
 
 export const movies: Movie[] = [
   {
-    id: 1,
+    id: v4(),
     title: 'The Shawshank Redemption',
   },
   {
-    id: 2,
+    id: v4(),
     title: 'The Godfather',
   },
 ];
