@@ -3,6 +3,7 @@ import { movies } from './__mocks__/mock-movies';
 import { MoviesPayload } from './models/movie';
 
 const app = express();
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Server is running!');
@@ -23,4 +24,15 @@ app.delete('/api/v1/movies/:id', (req: Request, res: Response) => {
   }
 });
 
+app.put('/api/v1/movies/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  const movie = movies.find((movie) => movie.id === Number(id));
+  if (!movie) {
+    res.status(404).send({ message: 'Movie not found' });
+  } else {
+    movie.title = title;
+    res.send({ message: 'Movie updated' });
+  }
+});
 export default app;
