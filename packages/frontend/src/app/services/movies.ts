@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { MoviesPayload } from '../../movie';
+import { Movie, MoviesPayload } from '../../movie';
 
 export const movieApi = createApi({
   reducerPath: 'movieApi',
@@ -22,7 +22,17 @@ export const movieApi = createApi({
       },
       invalidatesTags: (result, error, id) => [{ type: 'Movie', id }],
     }),
+    updateMovie: build.mutation<Movie, Movie>({
+      query(movie) {
+        return {
+          url: `/movies/${movie.id}`,
+          method: 'PUT',
+          body: movie,
+        };
+      },
+      invalidatesTags: (result, error, movie) => [{ type: 'Movie', id: movie.id }],
+    }),
   }),
 });
 
-export const { useGetMoviesQuery, useDeleteMovieMutation } = movieApi;
+export const { useGetMoviesQuery, useDeleteMovieMutation, useUpdateMovieMutation } = movieApi;
