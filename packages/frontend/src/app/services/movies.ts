@@ -36,14 +36,15 @@ export const movieApi = createApi({
       },
       invalidatesTags: [{ type: 'Movie', id: 'LIST' }],
     }),
-    updateMovie: build.mutation<{ success: boolean; id: number }, number>({
-      query(id) {
+    updateMovie: build.mutation<{ success: boolean; movie: Movie }, { id: string; movie: Movie }>({
+      query({ id, movie }) {
         return {
           url: `/movies/${id}`,
           method: 'PUT',
+          body: { movie },
         };
       },
-      invalidatesTags: (result, error, id) => [{ type: 'Movie', id }],
+      invalidatesTags: (result, error, { id, movie }) => [{ type: 'Movie', id }],
     }),
   }),
 });

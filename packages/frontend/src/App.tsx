@@ -1,19 +1,32 @@
 import { FormEvent, FormEventHandler, useEffect, useState } from 'react';
-import { useCreateMovieMutation, useDeleteMovieMutation, useGetMoviesQuery } from './app/services/movies';
+import { movieApi } from './app/services/movies';
+import { MovieItem } from './components/MovieItem';
 
 function App() {
   const [title, setTitle] = useState('');
+  const [validationError, setValidationError] = useState('');
 
-  const { data, error, isLoading } = useGetMoviesQuery();
-  const [deleteMovie, { isLoading: isDeleting, data: deleteData, isSuccess: deleteSuccess }] = useDeleteMovieMutation();
+  const { data, error, isLoading } = movieApi.useGetMoviesQuery();
+  const [deleteMovie, { isLoading: isDeleting, data: deleteData, isSuccess: deleteSuccess }] =
+    movieApi.useDeleteMovieMutation();
   const [createMovie, { isLoading: isCreating, data: createData, error: createError, isSuccess: createSuccess }] =
-    useCreateMovieMutation();
+    movieApi.useCreateMovieMutation();
+  const [updateMovie, { isLoading: isUpdating, data: updateData, error: updateError, isSuccess: updateSuccess }] =
+    movieApi.useUpdateMovieMutation();
+
+  console.log(movieApi.useDeleteMovieMutation());
 
   useEffect(() => {
     if (createSuccess) {
       setTitle('');
     }
   }, [createSuccess]);
+
+  useEffect(() => {
+    if (createError) {
+      setValidationError('something wrong');
+    }
+  }, [createError]);
 
   const onSubmit: FormEventHandler = async (event: FormEvent) => {
     event.preventDefault();
@@ -26,26 +39,7 @@ function App() {
       <h1>Movies</h1>
       {isLoading && <p>Loading...</p>}
       {error && <p>Error :(</p>}
-      {data && data.movies && (
-        <ul>
-          {data.movies.map((movie) => (
-            <li key={movie.id}>
-              {movie.id} - {movie.title}
-              <button
-                onClick={() => {
-                  deleteMovie(movie.id).then((result) => {
-                    console.log(result);
-                    console.log(deleteData);
-                    console.log(deleteSuccess);
-                  });
-                }}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      {data && data.movies && <ul>{data.movies.map((movie) => MovieItem({ movie }))}</ul>}
       <form onSubmit={onSubmit}>
         <label>
           Title:
@@ -54,7 +48,7 @@ function App() {
         <button type="submit">Submit</button>
       </form>
       {isCreating && <p>Creating...</p>}
-      {createError && <p>Error :(</p>}
+      {createError && <p>Error :( </p>}
 
       {isDeleting && <p>Deleting...</p>}
     </>

@@ -19,16 +19,16 @@ app.post(
   '/api/v1/movies',
   (
     req: Request<{}, {}, CreateMovieRequestPayload>,
-    res: Response<CreateMovieResponsePayload | { error: string }>,
+    res: Response<CreateMovieResponsePayload | { message: string }>,
     next: NextFunction
   ) => {
     const { movie } = req.body;
     if (!movie) {
-      return res.status(400).json({ error: 'Movie is required' });
+      return res.status(400).json({ message: 'Movie is required' });
     }
 
     if (!movie.title) {
-      return res.status(400).json({ error: 'Movie title is required' });
+      return res.status(400).json({ message: 'Movie title is required' });
     }
 
     const newMovie: Movie = {
@@ -50,6 +50,10 @@ app.delete('/api/v1/movies/:id', (req: Request<{ id: string }>, res: Response) =
     movies.splice(movies.indexOf(movie), 1);
     res.send({ message: 'Movie deleted' });
   }
+});
+
+app.get('/api/v1/movies/:movieId/actors/:actorId', (req: Request<{ id: string }>, res: Response) => {
+  console.log(req.params);
 });
 
 export default app;
