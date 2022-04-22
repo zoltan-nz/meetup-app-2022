@@ -14,8 +14,6 @@ function App() {
   const [updateMovie, { isLoading: isUpdating, data: updateData, error: updateError, isSuccess: updateSuccess }] =
     movieApi.useUpdateMovieMutation();
 
-  console.log(movieApi.useDeleteMovieMutation());
-
   useEffect(() => {
     if (createSuccess) {
       setTitle('');
@@ -39,7 +37,7 @@ function App() {
       <h1>Movies</h1>
       {isLoading && <p>Loading...</p>}
       {error && <p>Error :(</p>}
-      {data && data.movies && <ul>{data.movies.map((movie) => MovieItem({ movie }))}</ul>}
+      {data && data.movies && <ul>{data.movies.map((movie) => MovieItem({ movie, deleteMovie }))}</ul>}
       <form onSubmit={onSubmit}>
         <label>
           Title:
